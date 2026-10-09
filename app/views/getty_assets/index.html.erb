@@ -1,0 +1,35 @@
+<h1 class="text-2xl font-bold mb-4">Getty assets</h1>
+
+<%= form_with url: getty_assets_path, method: :post, class: "mb-6" do |f| %>
+  <%= f.text_area :urls, rows: 5, placeholder: "Paste Getty URLs, one per line",
+        class: "w-full border p-2 font-mono text-sm" %>
+  <%= f.submit "Fetch metadata", class: "mt-2 px-3 py-1 border rounded" %>
+  <%= link_to "Download CSV", getty_assets_path(format: :csv), class: "ml-4 underline" %>
+<% end %>
+
+<table class="w-full text-sm">
+  <thead>
+    <tr class="text-left border-b">
+      <th>ID</th>
+      <th>Status</th>
+      <th>Title</th>
+      <th>Photographer</th>
+      <th>Date</th>
+      <th>Via</th>
+      <th>Source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @assets.each do |a| %>
+      <tr class="border-b align-top">
+        <td><%= link_to a.asset_id, a, class: "underline" %></td>
+        <td><%= a.status %></td>
+        <td><%= a.title %></td>
+        <td><%= a.photographer %></td>
+        <td><%= a.date_created %></td>
+        <td><%= a.fetched_via %></td>
+        <td><%= a.source %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

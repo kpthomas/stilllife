@@ -1,0 +1,27 @@
+<h1 class="text-2xl font-bold mb-2"><%= @asset.title.presence || "Asset #{@asset.asset_id}" %></h1>
+<p class="mb-4">
+  Status: <strong><%= @asset.status %></strong>
+  <% if @asset.error_message %> — <%= @asset.error_message %><% end %>
+  <%= button_to "Refetch", refetch_getty_asset_path(@asset), class: "inline ml-4 underline" %>
+</p>
+
+<%= image_tag @asset.thumbnail_url, class: "mb-6" if @asset.thumbnail_url %>
+
+<dl class="grid grid-cols-[8rem_1fr] gap-1 mb-6 text-sm">
+  <dt>Source</dt><dd><%= link_to @asset.source_url, @asset.source_url, class: "underline break-all" %></dd>
+  <dt>Caption</dt><dd><%= @asset.caption %></dd>
+  <dt>Photographer</dt><dd><%= @asset.photographer %></dd>
+  <dt>Collection</dt><dd><%= @asset.collection %></dd>
+  <dt>Date</dt><dd><%= @asset.date_created %></dd>
+  <dt>License</dt><dd><%= @asset.license_model %></dd>
+  <dt>Dimensions</dt><dd><%= [@asset.width, @asset.height].compact.join("×") %></dd>
+  <dt>Keywords</dt><dd><%= @asset.keywords.join(", ") %></dd>
+  <dt>People</dt><dd><%= @asset.people.join(", ") %></dd>
+  <dt>Date (as given)</dt><dd><%= @asset.date_text %></dd>
+  <dt>Rights</dt><dd><%= @asset.rights %></dd>
+</dl>
+
+<h2 class="font-semibold">Raw response</h2>
+<pre class="text-xs bg-gray-100 p-3 overflow-x-auto"><%= JSON.pretty_generate(@asset.raw) %></pre>
+
+<p class="mt-4"><%= link_to "← Back", getty_assets_path, class: "underline" %></p>

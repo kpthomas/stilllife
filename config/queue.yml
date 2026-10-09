@@ -1,0 +1,17 @@
+# Solid Queue: keep Getty fetches to a modest concurrency so we don't hammer
+# their endpoints. Merge this into the generated config/queue.yml.
+default: &default
+  dispatchers:
+    - polling_interval: 1
+      batch_size: 500
+  workers:
+    - queues: [default]
+      threads: 3
+    - queues: [getty]
+      threads: 2
+      polling_interval: 0.5
+
+development:
+  <<: *default
+production:
+  <<: *default
