@@ -1,10 +1,10 @@
-<h1 class="text-2xl font-bold mb-4">Getty assets</h1>
+<h1 class="text-2xl font-bold mb-4">Image Sources</h1>
 
 <%= form_with url: getty_assets_path, method: :post, class: "mb-6" do |f| %>
-  <%= f.text_area :urls, rows: 5, placeholder: "Paste Getty URLs, one per line",
+  <%= f.text_area :urls, rows: 5, placeholder: "Paste Getty or LOC URLs, one per line",
         class: "w-full border p-2 font-mono text-sm" %>
-  <%= f.submit "Fetch metadata", class: "mt-2 px-3 py-1 border rounded" %>
-  <%= link_to "Download CSV", getty_assets_path(format: :csv), class: "ml-4 underline" %>
+  <%= f.submit "Fetch metadata", class: "btn" %>
+  <%= link_to "Download CSV", getty_assets_path(format: :csv) %>
 <% end %>
 
 <div class="mt-6 overflow-x-auto rounded-lg border border-gray-200">
@@ -21,15 +21,15 @@
       </tr>
     </thead>
     <tbody>
-      <% @assets.each do |a| %>
+      <% @assets.each do |item| %>
         <tr class="border-b align-top">
-          <td><%= link_to a.asset_id, a, class: "underline" %></td>
-          <td><%= a.status %></td>
-          <td><%= a.title %></td>
-          <td><%= a.photographer %></td>
-          <td><%= a.date_created %></td>
-          <td><%= a.fetched_via %></td>
-          <td><%= a.source %></td>
+          <td><%= link_to item.asset_id, item %></td>
+          <td><%= item.status %></td>
+          <td><%= item.title %></td>
+          <td><%= item.photographer %></td>
+          <td><%= item.date_created %></td>
+          <td><%= item.fetched_via %></td>
+          <td><%= item.source %></td>
         </tr>
       <% end %>
     </tbody>

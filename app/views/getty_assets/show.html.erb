@@ -1,14 +1,15 @@
+<p class="mt-4"><%= link_to "← Back", getty_assets_path, class: "underline" %></p>
 <h1 class="text-2xl font-bold mb-2"><%= @asset.title.presence || "Asset #{@asset.asset_id}" %></h1>
 <p class="mb-4">
   Status: <strong><%= @asset.status %></strong>
   <% if @asset.error_message %> — <%= @asset.error_message %><% end %>
-  <%= button_to "Refetch", refetch_getty_asset_path(@asset), class: "inline ml-4 underline" %>
+  <%= button_to "Refetch", refetch_getty_asset_path(@asset), class: "btn" %>
 </p>
 
-<%= image_tag @asset.thumbnail_url, class: "mb-6" if @asset.thumbnail_url %>
+<%= image_tag @asset.thumbnail_url, class: "preview", alt: @asset.title %>
 
 <dl class="details mb-6">
-  <dt>Source</dt><dd><%= link_to @asset.source_url, @asset.source_url, class: "underline break-all" %></dd>
+  <dt>Source</dt><dd><%= link_to @asset.source_url, @asset.source_url, class: "break-all" %></dd>
   <dt>Caption</dt><dd><%= @asset.caption %></dd>
   <dt>Photographer</dt><dd><%= @asset.photographer %></dd>
   <dt>Collection</dt><dd><%= @asset.collection %></dd>
@@ -24,4 +25,3 @@
 <h2 class="font-semibold">Raw response</h2>
 <pre class="text-xs bg-gray-100 p-3 overflow-x-auto"><%= JSON.pretty_generate(@asset.raw) %></pre>
 
-<p class="mt-4"><%= link_to "← Back", getty_assets_path, class: "underline" %></p>
