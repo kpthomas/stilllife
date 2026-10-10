@@ -128,7 +128,7 @@ class GettyClient
   def handle_status!(resp, asset_id)
     case resp.status
     when 200 then nil
-    when 404 then raise NotFound, "asset #{asset_id} not found"
+    when 404 then raise NotFound, "asset #{asset_id} not available via oEmbed (not embeddable or doesn't exist)"
     when 401, 403 then raise Error, "auth error (#{resp.status}) — check GETTY_API_KEY"
     else raise Error, "Getty returned #{resp.status} for #{asset_id}"
     end
