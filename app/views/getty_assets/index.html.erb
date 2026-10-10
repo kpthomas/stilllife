@@ -7,29 +7,31 @@
   <%= link_to "Download CSV", getty_assets_path(format: :csv), class: "ml-4 underline" %>
 <% end %>
 
-<table class="w-full text-sm">
-  <thead>
-    <tr class="text-left border-b">
-      <th>ID</th>
-      <th>Status</th>
-      <th>Title</th>
-      <th>Photographer</th>
-      <th>Date</th>
-      <th>Via</th>
-      <th>Source</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @assets.each do |a| %>
-      <tr class="border-b align-top">
-        <td><%= link_to a.asset_id, a, class: "underline" %></td>
-        <td><%= a.status %></td>
-        <td><%= a.title %></td>
-        <td><%= a.photographer %></td>
-        <td><%= a.date_created %></td>
-        <td><%= a.fetched_via %></td>
-        <td><%= a.source %></td>
+<div class="mt-6 overflow-x-auto rounded-lg border border-gray-200">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Title</th>
+        <th>Photographer</th>
+        <th>Date</th>
+        <th>Via</th>
+        <th>Source</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @assets.each do |a| %>
+        <tr class="border-b align-top">
+          <td><%= link_to a.asset_id, a, class: "underline" %></td>
+          <td><%= a.status %></td>
+          <td><%= a.title %></td>
+          <td><%= a.photographer %></td>
+          <td><%= a.date_created %></td>
+          <td><%= a.fetched_via %></td>
+          <td><%= a.source %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

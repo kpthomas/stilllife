@@ -7,7 +7,7 @@
 
 <%= image_tag @asset.thumbnail_url, class: "mb-6" if @asset.thumbnail_url %>
 
-<dl class="grid grid-cols-[8rem_1fr] gap-1 mb-6 text-sm">
+<dl class="details mb-6">
   <dt>Source</dt><dd><%= link_to @asset.source_url, @asset.source_url, class: "underline break-all" %></dd>
   <dt>Caption</dt><dd><%= @asset.caption %></dd>
   <dt>Photographer</dt><dd><%= @asset.photographer %></dd>
