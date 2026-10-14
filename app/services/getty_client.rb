@@ -12,6 +12,25 @@ class GettyClient
 
   API_BASE    = "https://api.gettyimages.com/v3"
   OEMBED_BASE = "https://embed.gettyimages.com"
+  MONTHS = Date::MONTHNAMES.compact.join("|")
+
+  def self.infer_date(caption)
+    return nil if caption.blank?
+
+    # "September 4, 1957" / "4 September 1957" / "SEPTEMBER 4: " (dateline, year unknown)
+    if (m = caption.match(/\b(#{MONTHS})\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b/i))
+        return Date.new(m[3].to_i, Date::MONTHNAMES.index(m[1].capitalize), m[2].to_i)
+    end
+    if (m = caption.match(/\b(\d{1,2})(st|nd|rd|th)?\s+(#{MONTHS})\s+(\d{4})\b/i))
+        return Date.new(m[4].to_i, Date::MONTHNAMES.index(m[3].capitalize), m[1].to_i)
+    end
+    if (m = caption.match(/\b(1[89]\d\d|20\d\d)\b/))
+      return Date.new(m[1].to_i, 1, 1) # year only; mark as approximate
+    end
+    nil
+  rescue Date::Error
+    nil
+  end
 
   # Fields worth asking the API for. See developer.gettyimages.com for the full list.
   API_FIELDS = %w[
@@ -70,26 +89,6 @@ class GettyClient
 
   # --- oEmbed ---------------------------------------------------------------
 
-  MONTHS = Date::MONTHNAMES.compact.join("|")
-
-  def infer_date(caption)
-    return nil if caption.blank?
-
-    # "September 4, 1957" / "4 September 1957" / "SEPTEMBER 4: " (dateline, year unknown)
-    if (m = caption.match(/\b(#{MONTHS})\s+(\d{1,2}),?\s+(\d{4})\b/i))
-        return Date.new(m[3].to_i, Date::MONTHNAMES.index(m[1].capitalize), m[2].to_i)
-    end
-    if (m = caption.match(/\b(\d{1,2})\s+(#{MONTHS})\s+(\d{4})\b/i))
-        return Date.new(m[3].to_i, Date::MONTHNAMES.index(m[2].capitalize), m[1].to_i)
-    end
-    if (m = caption.match(/\b(1[89]\d\d|20\d\d)\b/))
-      return Date.new(m[1].to_i, 1, 1) # year only; mark as approximate
-    end
-    nil
-  rescue Date::Error
-    nil
-  end
-
   def fetch_oembed(asset_id)
     resp = oembed_conn.get("oembed", url: "http://gty.im/#{asset_id}", caller: caller_domain)
     handle_status!(resp, asset_id)
@@ -101,7 +100,7 @@ class GettyClient
       photographer:  body["photographer"],
       credit:        body["photographer"],
       collection:    body["collection"],
-      date_created:  infer_date(body["caption"]),
+      date_created:  self.class.infer_date(body["caption"]),
       license_model: nil,
       width:         body["width"],
       height:        body["height"],
