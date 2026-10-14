@@ -32,7 +32,7 @@ class LocClient
       rights:        Array(item["rights_advisory"] || item["rights"]).join(" ").presence,
       width:         largest_image(resources)&.dig("width"),
       height:        largest_image(resources)&.dig("height"),
-      thumbnail_url: Array(item["image_url"])[-2] || Array(item["image_url"]).last,
+      thumbnail_url: Array(item["image_url"]).first,
       keywords:      Array(item["subject_headings"] || item["subjects"]),
       people:        [], # LoC puts people under subject headings; leave in keywords
       source_id:     Array(item["reproduction_number"]).first,

@@ -26,13 +26,13 @@ class GoogleSheetsExporter
   # Writes the header row if the tab is empty, then appends one row per asset.
   def append(assets)
     ensure_header!
-    rows = assets.map(&:csv_row)
+    rows   = assets.map { AssetCsv.row(it) }
     return 0 if rows.empty?
 
     value_range = Google::Apis::SheetsV4::ValueRange.new(values: rows)
     @service.append_spreadsheet_value(
       @sheet_id, "#{@tab}!A1", value_range,
-      value_input_option: "RAW", insert_data_option: "INSERT_ROWS"
+      value_input_option: "USER_ENTERED", insert_data_option: "INSERT_ROWS"
     )
     rows.size
   end
@@ -43,7 +43,7 @@ class GoogleSheetsExporter
     existing = @service.get_spreadsheet_values(@sheet_id, "#{@tab}!A1:A1").values
     return if existing.present?
 
-    header = Google::Apis::SheetsV4::ValueRange.new(values: [GettyAsset::CSV_COLUMNS])
+    header = Google::Apis::SheetsV4::ValueRange.new(values: [AssetCsv.headers])
     @service.update_spreadsheet_value(@sheet_id, "#{@tab}!A1", header, value_input_option: "RAW")
   end
 end

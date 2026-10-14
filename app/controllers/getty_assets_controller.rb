@@ -5,9 +5,8 @@ class GettyAssetsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data GettyAsset.to_csv(GettyAsset.done.order(:created_at)),
-                  filename: "getty-metadata-#{Date.current}.csv",
-                  type: "text/csv"
+        send_data AssetCsv.generate, 
+          filename: "assets-#{Date.current}.csv"
       end
     end
   end
