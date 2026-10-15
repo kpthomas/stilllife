@@ -6,7 +6,11 @@
   <%= button_to "Refetch", refetch_getty_asset_path(@asset), class: "btn" %>
 </p>
 
-<%= image_tag @asset.thumbnail_url, class: "preview", alt: @asset.title %>
+<% if @asset.thumbnail_url.present? %>
+  <%= image_tag @asset.thumbnail_url, class: "preview", alt: @asset.title %>
+<% else %>
+  <p>Thumbnail pending</p>
+<% end %>
 
 <dl class="details mb-6">
   <dt>Source</dt><dd><%= link_to @asset.source_url, @asset.source_url, class: "break-all" %></dd>
